@@ -39,19 +39,24 @@ echo "Welcome $USER"
   bindkey '^r' history-incremental-search-backward
 
 # History configuration:
-#set history size
+# set history size
   export HISTSIZE=10000
-#save history after logout
+# save history after logout
   export SAVEHIST=10000
-#history file
+# history file
   export HISTFILE=~/.zhistory
-#append into history file
+# append into history file
   setopt INC_APPEND_HISTORY
-#save only one command if 2 common are same and consistent
+# save only one command if 2 common are same and consistent
   setopt HIST_IGNORE_DUPS
-#add timestamp for each entry
+# add timestamp for each entry
   setopt EXTENDED_HISTORY
 
-if [[ -a ~/.localdotfiles/zshrc_local ]]; then
-    source ~/.localdotfiles/zshrc_local
-fi
+for f in zshaliases zshfunc zshrclocal; do
+    if [[ -f ~/localdotfiles/$f ]]; then
+        source ~/localdotfiles/$f
+    fi
+    if [[ -f ~/dotfiles/$f ]] ; then
+        source ~/dotfiles/$f
+    fi
+done
