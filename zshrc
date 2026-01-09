@@ -60,3 +60,4 @@ for f in zshaliases zshfunc zshrclocal; do
         source ~/dotfiles/$f
     fi
 done
+alias clang-tidy="/opt/homebrew/opt/llvm/bin/clang-tidy"

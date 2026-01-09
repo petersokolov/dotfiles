@@ -6,9 +6,9 @@
    set encoding=utf-8
    set fileencoding=utf-8
    set tw=121
-   set expandtab
    set tabstop=4
    set shiftwidth=4
+   set expandtab
    set softtabstop=4
    set incsearch
 
@@ -38,7 +38,7 @@
 
 " highligh long lines
    if exists('+colorcolumn')
-     set colorcolumn=80
+     set colorcolumn=120
      highlight ColorColumn ctermbg=234
    else
      au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
