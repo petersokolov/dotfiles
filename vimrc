@@ -1,7 +1,6 @@
 " Enable 256 colors:
    set t_Co=256
    set number
-   set paste
    set autoindent
    set encoding=utf-8
    set fileencoding=utf-8
