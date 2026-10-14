@@ -4,7 +4,7 @@
    set autoindent
    set encoding=utf-8
    set fileencoding=utf-8
-   set tw=121
+   set textwidth=120
    set tabstop=4
    set shiftwidth=4
    set expandtab
@@ -22,25 +22,45 @@
 " ctags (recursive search)
    set tags=./tags;,tags;$HOME
 
-" highlight space errors (trailing whitespace, etc.)
-" from: http://vim.wikia.com/wiki/Highlight_unwanted_spaces
-   highlight ExtraWhitespace ctermbg=brown guibg=brown
-   match ExtraWhitespace /\s\+$/
-   autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-   autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-   autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-   autocmd BufWinLeave * call clearmatches()
+" Highlight trailing whitespace and tabs.
+highlight ExtraWhitespace ctermbg=brown guibg=brown
+highlight Tabs ctermbg=brown guibg=brown
 
-" also highlight those naughty tab characters.
-   highlight Tabs ctermbg=brown guibg=brown
-   call matchadd("Tabs", "\t")
+function! DotfilesWhitespace(insert_mode) abort
+    " Remove only highlights created by this function.
+    for id in get(w:, 'dotfiles_whitespace_ids', [])
+        silent! call matchdelete(id)
+    endfor
+
+    " While typing, don't highlight whitespace at the cursor.
+    let pattern = a:insert_mode
+                \ ? '\s\+\%#\@<!$'
+                \ : '\s\+$'
+
+    let w:dotfiles_whitespace_ids = [
+                \ matchadd('ExtraWhitespace', pattern),
+                \ matchadd('Tabs', '\t')
+                \ ]
+endfunction
+
+augroup DotfilesWhitespace
+    autocmd!
+    autocmd BufWinEnter,WinEnter * call DotfilesWhitespace(mode() =~# '^i')
+    autocmd InsertEnter * call DotfilesWhitespace(1)
+    autocmd InsertLeave * call DotfilesWhitespace(0)
+augroup END
+
+call DotfilesWhitespace(mode() =~# '^i')
 
 " highligh long lines
    if exists('+colorcolumn')
      set colorcolumn=120
      highlight ColorColumn ctermbg=234
    else
-     au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+     augroup DotfilesLongLines
+       autocmd!
+       autocmd BufWinEnter * match ErrorMsg /\%>120v.\+/
+     augroup END
    endif
 
 " panel navigation:

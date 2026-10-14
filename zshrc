@@ -19,10 +19,8 @@ echo "Welcome $USER"
   export KEYTIMEOUT=1
 
 # Git
-  alias 'gk=z gitk --all'
   alias 'gs=git status'
   alias 'gd=git diff'
-  alias 'gg=z git gui'
   alias 'git-stashpullpop=git stash && git pull --rebase && git stash pop'
   alias 'gl=git log --graph --abbrev-commit --pretty=oneline --decorate'
 
